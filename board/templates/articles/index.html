@@ -1,0 +1,73 @@
+<!-- Parameters -->
+<!-- page, articles, has_prev, has_next -->
+
+{% extends 'base.html' %}
+
+{% block title %}
+페이지 {{ page|escape }}
+{% endblock %}
+
+{% block header %}
+<div class="page-title">페이지 {{ page|escape }}</div>
+<ul>
+    <li>
+        <a href="{% url 'index' %}">홈으로</a>
+    </li>
+    {% if user.is_authenticated %}
+    <li>
+        <a href="{% url 'compose_article' %}">새로운 편지 쓰기</a>
+    </li>
+    {% endif %}
+</ul>
+{% endblock %}
+
+{% block content %}
+<br><b>아직 카페가 개설되지 않았거나 오류가 발생한 경우 '전송하기'를 눌러도 편지가 전송되지 않습니다. 오류가 계속되면 더 캠프 앱을 사용하세요.</b>
+<div class="title-table">
+    <div class="title-row title-header">
+        <div class="article-id">No.</div>
+        <div class="article-title">제목</div>
+        <div class="article-author">작성자</div>
+        <div class="article-sent">전송 여부</div>
+        <div class="article-btnsend"></div>
+        <div class="article-lastupdated">마지막으로 수정된 시각</div>
+    </div>
+    {% for article in articles %}
+        <div class="title-row">
+            <div class="article-id">{{ article.id|escape }}</div>
+            <div class="article-title">
+                <a href="{% url 'get_article' article.id %}">{{ article.title|escape }}</a>
+            </div>
+            <div class="article-author">{{ article.author.username|escape }}</div>
+            <div class="article-sent">{% if article.sent %}<b>전송 성공</b>{% else %}<i>대기 중</i>{% endif %}</div>
+            <div class="article-btnsend">
+                {% if user.is_authenticated and user == article.author %}
+                    {% if not article.sent %}
+                        <button type="button" onclick="location.href='{% url 'send_article' article.id %}'">
+                            전송하기
+                        </button>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <div class="article-lastupdated">{{ article.last_updated_at }}</div>
+        </div>
+    {% endfor %}
+</div>
+<div class="pagination">
+    {% if has_prev %}
+        <div>
+            <a href="{% url 'article_list' page|add:'-1' %}">&lt; 이전 페이지</a>
+        </div>
+    {% else %}
+        <div class="disabled">&lt; 이전 페이지</div>
+    {% endif %}
+    
+    {% if has_next %}
+        <div>
+            <a href="{% url 'article_list' page|add:1 %}">다음 페이지 &gt;</a>
+        </div>
+    {% else %}
+        <div class="disabled">다음 페이지 &gt;</div>
+    {% endif %}
+</div>
+{% endblock %}

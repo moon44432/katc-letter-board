@@ -1,0 +1,54 @@
+<!-- Parameters -->
+<!-- form -->
+
+{% extends 'base.html' %}
+
+{% block title %}회원가입{% endblock %}
+
+{% block header %}
+<div class="page-title">회원가입</div>
+<ul>
+    <li>
+        <a href="{% url 'index' %}">홈으로</a>
+    </li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="panell">
+        <div class="panel-row">
+            <div class="label">아이디</div>
+            <div class="input">
+                {{ form.username }}
+            </div>
+        </div>
+        <div class="panel-row">
+            <div class="label">비밀번호</div>
+            <div class="input">
+                {{ form.password }}
+            </div>
+        </div>
+        <div class="panel-row">
+            <div class="label">성</div>
+            <div class="input">
+                {{ form.last_name }}
+            </div>
+        </div>
+        <div class="panel-row">
+            <div class="label">이름</div>
+            <div class="input">
+                {{ form.first_name }}
+            </div>
+        </div>
+        <div class="panel-row center">
+            <button type="submit">회원가입</button>
+        </div>
+    </div>
+</form>
+<div>
+    이미 가입하셨나요?&nbsp;
+    <a href="{% url 'login' %}">로그인</a>
+</div>
+{% endblock %}

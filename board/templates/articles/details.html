@@ -1,0 +1,39 @@
+<!-- Parameters -->
+<!-- user, article -->
+
+{% extends 'base.html' %}
+
+{% block title %}
+{{ article.title|escape }}
+{% endblock %}
+
+{% block header %}
+<ul>
+    <li>
+        <a href="{% url 'index' %}">홈으로</a>
+    </li>
+    <li>
+        <a href="{% url 'article_list' 1 %}">목록으로</a>
+    </li>
+</ul>
+<div class="page-title article-title">{{ article.title|escape }}</div>
+<div class="article-details">
+    {{ article.author.username|escape }}이(가) 작성함 | {{ article.last_updated_at }}
+</div>
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated and user == article.author %}
+<div class="article-content">{{ article.content|safe }}</div>
+{% else %}
+<br><i>작성자만 편지의 내용을 보거나 수정할 수 있습니다.</i>
+{% endif %}
+
+{% if user.is_authenticated and user == article.author %}
+<div class="update-article">
+    <a href="{% url 'edit_article' article.id %}">편지 수정하기</a>
+    /
+    <a href="{% url 'delete_article' article.id %}">편지 삭제하기</a>
+</div>
+{% endif %}
+{% endblock %}
