@@ -5,7 +5,7 @@ from .models import Article
 from .config import name, bday, edate, uname, id, pw
 
 # thecampy API 사양 참고하여 config.py를 새로 만들면 됨.
-# ex) '홍길동', 20010101, 20210607, '육군훈련소'
+# ex) '홍길동', 20010101, 20210607, '육군훈련소', 'someone@example.com', 'q1w2e3r4!'
 
 SOLDIER = thecampy.Soldier(
     name, bday, edate, uname
